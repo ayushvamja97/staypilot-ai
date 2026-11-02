@@ -131,3 +131,6 @@ def list_rooms(
         "hotel_capacity": HOTEL["total_rooms"],
         "inventory_complete": len(ROOMS) == HOTEL["total_rooms"],
     }
+
+from copilot_api import router as copilot_router
+app.include_router(copilot_router)
