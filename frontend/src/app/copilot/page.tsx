@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useRef, useState } from "react";
@@ -89,7 +89,19 @@ export default function CopilotPage() {
       if (!response.ok) {
         if (response.status === 404) {
           throw new Error(
-            "The AI service is not connected yet. We will build its backend next."
+            "The chat API route was not found."
+          );
+        }
+
+        if (response.status === 503) {
+          throw new Error(
+            "AI is not configured. Add an API key to the backend to enable responses."
+          );
+        }
+
+        if (response.status === 502) {
+          throw new Error(
+            "The AI backend could not complete the request. Please retry."
           );
         }
 
@@ -184,8 +196,8 @@ export default function CopilotPage() {
               Development Status
             </div>
             <p className="mt-2 text-xs leading-5 text-slate-500">
-              The conversation interface is being built. AI responses
-              will only appear when the backend is connected.
+              The chat backend is connected. Live AI responses
+              require an OpenAI API key on the server.
             </p>
           </div>
         </aside>
@@ -206,7 +218,7 @@ export default function CopilotPage() {
               </div>
 
               <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800">
-                AI Integration Pending
+                Backend Connected - AI Setup Pending
               </span>
             </div>
 
@@ -387,7 +399,7 @@ export default function CopilotPage() {
               </div>
 
               <p className="mt-3 text-center text-xs text-slate-400">
-                Development environment. AI functionality is not connected yet.
+                Development environment. Synthetic hotel data only.
                 Verify operational decisions before acting.
               </p>
             </div>
