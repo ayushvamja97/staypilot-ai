@@ -45,6 +45,7 @@ export default function CopilotPage() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [mode, setMode] = useState<"demo" | "ai">("demo");
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   function selectSuggestion(prompt: string) {
@@ -75,7 +76,7 @@ export default function CopilotPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/copilot/chat", {
+      const response = await fetch(mode === "demo" ? "/api/copilot/demo-chat" : "/api/copilot/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -95,7 +96,9 @@ export default function CopilotPage() {
 
         if (response.status === 503) {
           throw new Error(
-            "AI is not configured. Add an API key to the backend to enable responses."
+            mode === "demo"
+              ? "Free demo service unavailable. Check that FastAPI is running."
+              : "AI is not configured. Add an API key to the backend to enable responses."
           );
         }
 
@@ -196,8 +199,8 @@ export default function CopilotPage() {
               Development Status
             </div>
             <p className="mt-2 text-xs leading-5 text-slate-500">
-              The chat backend is connected. Live AI responses
-              require an OpenAI API key on the server.
+              Free demo mode searches synthetic room inventory.
+              OpenAI mode requires a server-side API key.
             </p>
           </div>
         </aside>
@@ -217,9 +220,49 @@ export default function CopilotPage() {
                 </p>
               </div>
 
-              <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800">
-                Backend Connected - AI Setup Pending
-              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  disabled={loading || mode === "demo"}
+                  onClick={() => {
+                    setMode("demo");
+                    setMessages([]);
+                    setInput("");
+                    setError("");
+                  }}
+                  className={`rounded-lg border px-4 py-2 text-xs font-semibold ${
+                    mode === "demo"
+                      ? "border-blue-700 bg-blue-700 text-white"
+                      : "border-slate-300 bg-white text-slate-600"
+                  } disabled:cursor-default`}
+                >
+                  Free Demo
+                </button>
+
+                <button
+                  type="button"
+                  disabled={loading || mode === "ai"}
+                  onClick={() => {
+                    setMode("ai");
+                    setMessages([]);
+                    setInput("");
+                    setError("");
+                  }}
+                  className={`rounded-lg border px-4 py-2 text-xs font-semibold ${
+                    mode === "ai"
+                      ? "border-blue-700 bg-blue-700 text-white"
+                      : "border-slate-300 bg-white text-slate-600"
+                  } disabled:cursor-default`}
+                >
+                  OpenAI
+                </button>
+
+                <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800">
+                  {mode === "demo"
+                    ? "Free Inventory Demo"
+                    : "OpenAI Setup Required"}
+                </span>
+              </div>
             </div>
 
             <div className="mt-4 flex gap-4 text-xs md:hidden">

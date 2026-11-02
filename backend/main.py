@@ -137,3 +137,6 @@ app.include_router(copilot_router)
 
 from copilot_chat import router as chat_router
 app.include_router(chat_router)
+
+from copilot_demo import router as demo_router
+app.include_router(demo_router)
