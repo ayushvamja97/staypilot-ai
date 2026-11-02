@@ -1,4 +1,4 @@
-﻿from datetime import date, timedelta
+from datetime import date, timedelta
 
 from fastapi import FastAPI
 
@@ -14,8 +14,8 @@ reservations = [
     {
         "id": "SP-1001",
         "guest_name": "Jordan Lee",
-        "room_number": "201",
-        "room_type": "King",
+        "room_number": "1410",
+        "room_type": "KNPX",
         "arrival_date": today.isoformat(),
         "departure_date": (today + timedelta(days=2)).isoformat(),
         "status": "reserved",
@@ -23,8 +23,8 @@ reservations = [
     {
         "id": "SP-1002",
         "guest_name": "Taylor Morgan",
-        "room_number": "205",
-        "room_type": "Two Queens",
+        "room_number": "403",
+        "room_type": "QND2",
         "arrival_date": today.isoformat(),
         "departure_date": (today + timedelta(days=3)).isoformat(),
         "status": "reserved",
@@ -32,8 +32,8 @@ reservations = [
     {
         "id": "SP-1003",
         "guest_name": "Alex Rivera",
-        "room_number": "310",
-        "room_type": "King",
+        "room_number": "1411",
+        "room_type": "KNPX",
         "arrival_date": (today - timedelta(days=2)).isoformat(),
         "departure_date": today.isoformat(),
         "status": "checked_in",
@@ -41,8 +41,8 @@ reservations = [
     {
         "id": "SP-1004",
         "guest_name": "Sam Patel",
-        "room_number": "312",
-        "room_type": "Two Queens",
+        "room_number": "407",
+        "room_type": "QND2",
         "arrival_date": (today - timedelta(days=1)).isoformat(),
         "departure_date": (today + timedelta(days=2)).isoformat(),
         "status": "checked_in",
