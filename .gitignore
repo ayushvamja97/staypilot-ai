@@ -1,0 +1,45 @@
+﻿# Secrets and environment variables
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*.json
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Next.js and Node
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Backups
+*.backup.py
+*.backup.txt
+.gitignore.original.txt
+
+# Internal reference documents
+*.pdf
+*.docx
+*.xlsx
+*.xls
+
+# Logs and editor files
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
