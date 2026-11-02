@@ -1,4 +1,4 @@
-﻿"""Free, rule-based chat for synthetic hotel inventory."""
+"""Free, rule-based chat for synthetic hotel inventory."""
 
 import re
 
@@ -19,6 +19,76 @@ def demo_chat(request: ChatRequest):
     question = request.message.strip()
     text = question.lower()
 
+    if re.fullmatch(
+        r"(?:what kinds?|which types?|what types?)"
+        r"(?: of rooms?)?\??",
+        text,
+    ):
+        previous = next(
+            (
+                turn.content.lower()
+                for turn in reversed(request.history)
+                if turn.role == "user"
+            ),
+            "",
+        )
+
+        previous_floor = re.search(
+            r"\b(?:floor|level)\s*(\d{1,2})\b"
+            r"|\b(\d{1,2})(?:st|nd|rd|th)\s+floor\b",
+            previous,
+        )
+
+        floor = (
+            int(previous_floor.group(1) or previous_floor.group(2))
+            if previous_floor
+            else None
+        )
+
+        view = (
+            "river" if re.search(r"\briver\b", previous)
+            else "city" if re.search(r"\bcity\b", previous)
+            else None
+        )
+
+        categories = []
+
+        for code, details in HOTEL["room_types"].items():
+            count = search_rooms(
+                floor=floor,
+                view=view,
+                room_type=code,
+                limit=1,
+            )["total"]
+
+            if count:
+                categories.append(
+                    f"{code} - {details['name']}: {count}"
+                )
+
+        scope = (
+            f"floor {floor}" if floor is not None
+            else "the entire hotel"
+        )
+
+        if view is not None:
+            scope += f", {view}-view"
+
+        if categories:
+            answer = (
+                f"Room categories for {scope}:\n"
+                + "\n".join(categories)
+            )
+        else:
+            answer = f"No matching room categories for {scope}."
+
+        answer += (
+            "\nSynthetic inventory only. "
+            "Booking availability is not verified."
+        )
+
+        return {"answer": answer, "sources": [SOURCE]}
+
     if re.search(
         r"\b(available|availability|vacant|booking|book|reserve)\b",
         text,
@@ -32,7 +102,18 @@ def demo_chat(request: ChatRequest):
             "sources": [SOURCE],
         }
 
-    if not re.search(r"\b(rooms?|inventory|suites?)\b", text):
+    inventory_words = bool(
+        re.search(r"\b(rooms?|inventory|suites?)\b", text)
+    )
+    view_query = bool(
+        re.search(r"\b(river|city)[\s-]*view\b", text)
+        and re.search(
+            r"\b(how many|which|show|find|list|any)\b",
+            text,
+        )
+    )
+
+    if not (inventory_words or view_query):
         return {
             "answer": (
                 "Free demo mode supports room-inventory questions only. "

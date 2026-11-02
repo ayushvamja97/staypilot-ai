@@ -1,4 +1,4 @@
-﻿"""Tests for free demo mode. No OpenAI requests."""
+"""Tests for free demo mode. No OpenAI requests."""
 
 import sys
 import unittest
@@ -80,6 +80,62 @@ class DemoChatTests(unittest.TestCase):
         self.assertIn("4 matching rooms", response.json()["answer"])
         mock_openai.assert_not_called()
 
+
+    def test_river_view_without_word_rooms(self):
+        response = self.client.post(
+            "/api/copilot/demo-chat",
+            json={
+                "message": "how many river view on 5th floor"
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        answer = response.json()["answer"]
+        self.assertIn("0 matching rooms", answer)
+        self.assertIn("floor 5", answer)
+        self.assertIn("river-view", answer)
+
+    def test_what_kind_follow_up(self):
+        response = self.client.post(
+            "/api/copilot/demo-chat",
+            json={
+                "message": "what kind",
+                "history": [
+                    {
+                        "role": "user",
+                        "content": "how many rooms in hotel",
+                    }
+                ],
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        answer = response.json()["answer"]
+        self.assertIn("Room categories", answer)
+        self.assertIn("QNBX", answer)
+        self.assertIn("QND2", answer)
+
+    def test_what_kind_on_fifth_floor(self):
+        response = self.client.post(
+            "/api/copilot/demo-chat",
+            json={
+                "message": "what kind?",
+                "history": [
+                    {
+                        "role": "user",
+                        "content": "how many rooms on 5th floor",
+                    }
+                ],
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        answer = response.json()["answer"]
+        self.assertIn("floor 5", answer)
+        self.assertIn("QNBX", answer)
+        self.assertIn("QND2", answer)
+        self.assertIn("QNDA", answer)
+        self.assertNotIn("KNPW", answer)
 
 if __name__ == "__main__":
     unittest.main()
