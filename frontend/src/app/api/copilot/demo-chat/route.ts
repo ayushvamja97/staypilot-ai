@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = "http://127.0.0.1:8002/api/copilot/demo-chat";
+const BACKEND_URL = `${(process.env.STAYPILOT_BACKEND_ORIGIN || "http://127.0.0.1:8002").replace(/\/$/, "")}/api/copilot/demo-chat`;
 
 export async function POST(request: NextRequest) {
   let payload: unknown;
