@@ -1,4 +1,4 @@
-﻿HOTEL = {
+HOTEL = {
     "name": "StayPilot Demo Property",
     "total_rooms": 290,
     "room_types": {
@@ -61,7 +61,7 @@ def add_verified_rooms(room_type, floor, suffixes):
     numbers = HOTEL["room_types"][room_type].setdefault("rooms", [])
 
     for suffix in suffixes:
-        number = f"{floor:02d}{suffix:02d}"
+        number = str(floor * 100 + suffix)
         if number not in numbers:
             numbers.append(number)
 
