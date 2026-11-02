@@ -6,6 +6,12 @@ StayPilot AI explores how hotel teams could combine room inventory, operational 
 
 > **Project status:** Portfolio prototype using synthetic demonstration data. Not connected to a live hotel property-management system.
 
+## Screenshot
+
+![Dashboard](docs/screenshots/dashboard.jpg)
+
+Local dashboard displaying the synthetic hotel inventory and demonstration operations data.
+
 ## What it does
 
 - **Hotel dashboard:** Displays sample reservation and operational metrics.
@@ -190,8 +196,18 @@ These paths are served by FastAPI. The Next.js frontend also exposes chat proxy 
 - Improve the Copilot experience and supported questions.
 - Add documented, verified operational knowledge sources.
 - Prepare hosted deployment with environment-based configuration.
-- Add screenshots, automated checks, and further accessibility testing.
+- Expand accessibility testing.
 
 ## Development
 
 Built as a full-stack portfolio project demonstrating API design, React and TypeScript development, Python backend engineering, structured data modeling, automated testing, and optional AI tool integration.
+
+## Automated checks
+
+[![StayPilot Checks](https://github.com/ayushvamja97/staypilot-ai/actions/workflows/checks.yml/badge.svg)](https://github.com/ayushvamja97/staypilot-ai/actions/workflows/checks.yml)
+
+GitHub Actions runs all 35 backend tests on pushes and pull requests without an OpenAI key.
+
+## License
+
+[MIT](LICENSE). Dependencies retain their own licenses.
