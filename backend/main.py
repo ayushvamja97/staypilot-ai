@@ -134,3 +134,6 @@ def list_rooms(
 
 from copilot_api import router as copilot_router
 app.include_router(copilot_router)
+
+from copilot_chat import router as chat_router
+app.include_router(chat_router)
